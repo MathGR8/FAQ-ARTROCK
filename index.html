@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Perguntas Frequentes - ArtRock</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    /* ====== RESET SIMPLES ====== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f7f7f7;
+      color: #222;
+      padding: 40px 16px;
+    }
+
+    /* ====== CONTAINER GERAL ====== */
+    .faq-section {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+      padding: 32px 24px;
+    }
+
+    .faq-title {
+      text-align: center;
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    /* ====== LISTA DE ITENS ====== */
+    .faq-list {
+      border-top: 1px solid #e5e5e5;
+    }
+
+    .faq-item {
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    /* ====== CABEÇALHO DA PERGUNTA ====== */
+    .faq-question {
+      width: 100%;
+      max-width: 1200px;
+      background: none;
+      border: none;
+      padding: 16px 0;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .faq-question-text {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .faq-icon-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid #b3b3b3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+    }
+
+    .faq-question-label {
+      display: flex;
+      align-items: center;
+      gap: 6px; 
+      flex-direction: row;
+    }
+
+    .faq-question-label span.emoji {
+      font-size: 16px;
+    }
+
+    /* Ícone da setinha à direita */
+    .faq-toggle-icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s ease;
+      font-size: 16px;
+    }
+
+    .faq-item.is-open .faq-toggle-icon {
+      transform: rotate(180deg);
+    }
+
+    /* ====== CONTEÚDO DA RESPOSTA ====== */
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.25s ease, opacity 0.25s ease, padding-bottom 0.25s ease;
+      opacity: 0;
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0 30px;
+    }
+
+    .faq-item.is-open .faq-answer {
+      opacity: 1;
+      padding-bottom: 20px; /* espaço em branco abaixo da resposta aberta */
+    }
+
+    .faq-answer-inner {
+      padding-top: 4px;
+    }
+
+    /* LINKS: pretos, negrito, sem underline */
+    .faq-answer a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      border-bottom: none;
+    }
+
+    .faq-answer a:hover {
+      text-decoration: underline;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-top: 8px;
+    }
+
+    ul li {
+      margin-bottom: 4px;
+    }
+
+    /* Cupom de desconto clicável */
+    .coupon-code {
+      cursor: pointer;
+      padding: 1px 3px;
+      border-radius: 4px;
+      background: #f0f0f0;
+      border: 1px dashed gray;
+    }
+
+    .coupon-code:hover {
+      background: #e0e0e0;
+    }
+
+    /* ====== RESPONSIVO (MOBILE) ====== */
+    @media (max-width: 600px) {
+      body {
+        padding: 24px 12px;
+      }
+
+      .faq-section {
+        padding: 24px 16px;
+      }
+
+      .faq-title {
+        font-size: 16px;
+      }
+
+      .faq-question {
+        font-size: 12px;
+        gap: 8px;
+      }
+
+      .faq-answer {
+        font-size: 10px;
+      }
+
+      .faq-icon-circle {
+        width: 12px;
+        height: 12px;
+        font-size: 11px;
+      }
+
+      .faq-question-label span.emoji {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="faq-section">
+    <h2 class="faq-title">Perguntas Frequentes</h2>
+
+    <!-- A lista será preenchida via JavaScript para facilitar edição de textos/ordem -->
+    <div id="faqList" class="faq-list"></div>
+  </section>
+
+  <script>
+    /* 
+      ====== CONFIGURAÇÃO DAS PERGUNTAS / RESPOSTAS ======
+      - Para alterar textos, ordem ou emojis, basta editar o array faqData abaixo.
+      - Cada item possui:
+          - question: texto da pergunta
+          - answer: HTML da resposta (pode usar <p>, <br>, <ul>, etc.)
+          - icon: emoji relacionado à pergunta
+    */
+
+    const faqData = [
+      {
+        icon: "🔄",
+        question: "Se não servir, posso trocar?",
+        answer: `
+          Sim! você pode solicitar a troca ou devolução do produto até 7 dias após a entrega,
+          ou até 30 dias para defeitos de fabricação. Agora você poderá efetuar sua troca ou fazer
+          a devolução do seu pedido de forma automatizada.<br><br>
+          Para solicitar, <a href="https://artrock.troque.app.br/" target="_blank" rel="noopener noreferrer">clique aqui</a>.
+        `
+      },
+      {
+        icon: "🚚",
+        question: "Tem frete grátis?",
+        answer: `
+          O frete é calculado automaticamente no carrinho, conforme peso, volume e endereço.<br>
+          Temos promoções de frete grátis via PAC/Correios para compras a partir de:
+          <ul>
+            <li><strong>R$ 249</strong> - Estado de São Paulo</li>
+            <li><strong>R$ 299</strong> - Sul, Sudeste e Centro-Oeste</li>
+            <li><strong>R$ 349</strong> - Norte e Nordeste</li>
+          </ul>
+          Alguns produtos ou regiões podem ter categorias especiais de frete, com preços e prazos diferentes.<br>Consulte o valor e tempo no carrinho.
+        `
+      },
+      {
+        icon: "💸",
+        question: "Tem desconto para primeira compra?",
+        answer: `
+          Tem sim! Utilize o cupom <strong><span class="coupon-code" data-coupon="BEMVINDO">BEMVINDO</span></strong> em seu carrinho e aproveite
+          <strong>10% de desconto</strong> em sua primeira compra.
+        `
+      },
+      {
+        icon: "⏱️",
+        question: "Quanto tempo para entregar meu pedido?",
+        answer: `
+          Nossos envios geralmente são feitos no próximo dia útil após a compra.<br><br>
+          Para consultar valor e prazo de entrega, basta informar seu CEP no carrinho ou na página do produto.
+          Assim você visualiza rapidamente as opções de frete disponíveis e o tempo estimado para receber seu pedido.
+        `
+      },
+      {
+        icon: "🏭",
+        question: "Posso retirar o produto pessoalmente?",
+        answer: `
+          Sim! Para clientes de São José dos Campos e região, disponibilizamos a retirada diretamente na fábrica.
+          Se preferir, também oferecemos entrega por motoboy. Pedidos feitos até as 12h podem ser retirados
+          ou enviados no mesmo dia.
+        `
+      },
+      {
+        icon: "🔍",
+        question: "Como rastrear meu pedido?",
+        answer: `
+          Você pode rastrear seu pedido no próprio site. <br>
+          Basta <a href="https://www.artrock.com.br/pagina/rastreio.html" target="_blank" rel="noopener noreferrer">clicar aqui</a>
+          e informar seus dados de rastreio.
+        `
+      },
+      {
+        icon: "👕",
+        question: "As camisetas encolhem?",
+        answer: `
+          Nossas camisetas 100% algodão podem ter um leve encolhimento natural de cerca de 4% após as primeiras
+          lavagens — algo comum desse tipo de tecido.<br><br>
+          Já os modelos produzidos com tecidos premium mesclados não encolhem, mantendo exatamente o
+          caimento original. Em todos os casos, garantimos conforto, durabilidade e alta qualidade das peças.
+        `
+      },
+      {
+        icon: "📢",
+        question: "Como fico sabendo das promoções que estão rolando no site?",
+        answer: `
+          Quer ter acesso a promoções semanais, brindes exclusivos e limitados e ficar por dentro das novidades
+          que estão chegando no site? Entre no grupo VIP - <strong>Zap Rockers</strong>.<br><br>
+          Para participar, <a href="https://chat.whatsapp.com/E9PfLmgKtrKHbtva7tfeMw"
+          target="_blank" rel="noopener noreferrer">clique aqui</a>.
+        `
+      },
+      {
+        icon: "📏",
+        question: "Como descubro meu tamanho?",
+        answer: `
+          A ArtRock se destaca por trabalhar com tamanhos do <strong>P ao X8</strong>.
+          Diante de tanta variedade, para garantir o tamanho perfeito, basta consultar a
+          tabela de medidas disponível na página do produto, logo abaixo do seletor de tamanhos.<br><br>
+          Compare as medidas com uma camiseta que você já usa ou, se preferir, com as medidas do seu próprio corpo.
+        `
+      },
+      {
+        icon: "💰",
+        question: "Quais as formas de pagamento?",
+        answer: `
+          Trabalhamos com as principais formas de pagamento:
+          <ul>
+            <li><strong>Pix</strong> – rápido, prático e de aprovação quase imediata;</li>
+            <li><strong>Cartão de crédito</strong> – diversas bandeiras, até <strong>4x sem juros</strong> ou em até 12x;</li>
+            <li><strong>Mercado Pago</strong> – intermediação segura e prática pelo Mercado Pago.</li>
+          </ul>
+        `
+      }
+    ];
+
+    // ====== MONTA A LISTA DE FAQ DINAMICAMENTE ======
+    const faqListEl = document.getElementById("faqList");
+
+    faqData.forEach((item) => {
+      const faqItem = document.createElement("div");
+      faqItem.className = "faq-item";
+
+      faqItem.innerHTML = `
+        <button class="faq-question" type="button" aria-expanded="false">
+          <div class="faq-question-text">
+            <span class="faq-icon-circle">?</span>
+            <div class="faq-question-label">
+              <span class="emoji">${item.icon}</span>
+              <span>${item.question}</span>
+            </div>
+          </div>
+          <span class="faq-toggle-icon">⌄</span>
+        </button>
+        <div class="faq-answer" aria-hidden="true">
+          <div class="faq-answer-inner">
+            ${item.answer}
+          </div>
+        </div>
+      `;
+
+      faqListEl.appendChild(faqItem);
+    });
+
+    // ====== CÓPIA DO CUPOM PARA ÁREA DE TRANSFERÊNCIA ======
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      } else {
+        // Fallback para navegadores mais antigos
+        const tempInput = document.createElement("textarea");
+        tempInput.value = text;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        try {
+          document.execCommand("copy");
+        } catch (e) {}
+        document.body.removeChild(tempInput);
+        return Promise.resolve();
+      }
+    }
+
+    const couponElements = document.querySelectorAll(".coupon-code");
+    couponElements.forEach(el => {
+      const originalText = el.textContent;
+      const coupon = el.dataset.coupon || originalText.trim();
+
+      el.addEventListener("click", () => {
+        copyToClipboard(coupon).then(() => {
+          el.textContent = "COPIADO";
+          setTimeout(() => {
+            el.textContent = originalText;
+          }, 2000);
+        });
+      });
+    });
+
+    // ====== LÓGICA DE ABRIR / FECHAR GAVETAS ======
+    const faqItems = document.querySelectorAll(".faq-item");
+
+    faqItems.forEach(item => {
+      const btn = item.querySelector(".faq-question");
+      const answer = item.querySelector(".faq-answer");
+
+      // Começa fechado
+      answer.style.maxHeight = "0px";
+
+      btn.addEventListener("click", () => {
+        const isOpen = item.classList.contains("is-open");
+
+        // Fecha todas as outras gavetas (comportamento típico de FAQ)
+        faqItems.forEach(other => {
+          if (other !== item) {
+            other.classList.remove("is-open");
+            const otherAnswer = other.querySelector(".faq-answer");
+            otherAnswer.style.maxHeight = "0px";
+            other.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+            otherAnswer.setAttribute("aria-hidden", "true");
+          }
+        });
+
+        // Abre/fecha a gaveta clicada
+        if (!isOpen) {
+          item.classList.add("is-open");
+          answer.style.maxHeight = answer.scrollHeight + "px"; // altura necessária para o conteúdo
+          btn.setAttribute("aria-expanded", "true");
+          answer.setAttribute("aria-hidden", "false");
+        } else {
+          item.classList.remove("is-open");
+          answer.style.maxHeight = "0px";
+          btn.setAttribute("aria-expanded", "false");
+          answer.setAttribute("aria-hidden", "true");
+        }
+      });
+    });
+  </script>
+</body>
+</html>
